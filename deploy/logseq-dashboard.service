@@ -1,0 +1,15 @@
+[Unit]
+Description=Logseq Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=pi
+WorkingDirectory=/home/pi/logseq_dashboard
+ExecStart=/home/pi/logseq_dashboard/run.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

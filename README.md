@@ -111,7 +111,28 @@ Do **not** expose the dashboard to the public internet.
 4. `uv sync` to install dependencies into `.venv` from `uv.lock`.
 5. Make sure `git pull` / `git push` work non-interactively (SSH key on the Pi,
    SSH remote URL — not HTTPS — on the notes repo).
-6. Run `./run.sh` (under systemd or tmux).
+6. Install as a systemd service (see below) so it survives SSH disconnects and
+   restarts on boot.
+
+### Installing as a systemd service
+
+A unit template lives at [`deploy/logseq-dashboard.service`](deploy/logseq-dashboard.service).
+It assumes the Pi user is `pi` and the dashboard is at `/home/pi/logseq_dashboard` —
+edit the `User=`, `WorkingDirectory=`, and `ExecStart=` lines if that's not the case.
+
+```sh
+sudo cp deploy/logseq-dashboard.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now logseq-dashboard
+```
+
+Useful commands:
+
+```sh
+systemctl status logseq-dashboard       # is it running?
+journalctl -u logseq-dashboard -f       # tail the logs
+sudo systemctl restart logseq-dashboard # after editing .env or pulling new code
+```
 
 ## Interaction with `logseq-plugin-git`
 
