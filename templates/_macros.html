@@ -1,0 +1,65 @@
+{% macro render_block(b, today_iso) %}
+<li class="todo {{ 'overdue' if b.deadline and b.deadline.isoformat() < today_iso else '' }}">
+  <div class="row">
+    <form method="post" action="/blocks/{{ b.stable_key }}/marker" class="inline">
+      <input type="hidden" name="marker" value="DONE">
+      <button type="submit" class="check" title="Mark DONE">✓</button>
+    </form>
+    <span class="marker marker-{{ b.marker|lower }}">{{ b.marker }}</span>
+    {% if b.priority %}<span class="priority">[#{{ b.priority }}]</span>{% endif %}
+    <a class="content" href="/open/{{ b.stable_key }}" title="Open in Logseq">{{ b.content | render_content | safe }}</a>
+  </div>
+  <div class="row meta-row">
+    <a class="page" href="/open/{{ b.stable_key }}" title="Open in Logseq">{{ b.page }}</a>
+    <form method="post" action="/blocks/{{ b.stable_key }}/scheduled" class="inline date-form">
+      <label>S:</label>
+      <input type="date" name="scheduled" value="{{ b.scheduled.isoformat() if b.scheduled else '' }}" onchange="this.form.submit()">
+      {% if b.scheduled %}<button type="submit" name="scheduled" value="" class="clear" title="Clear">×</button>{% endif %}
+    </form>
+    <form method="post" action="/blocks/{{ b.stable_key }}/deadline" class="inline date-form">
+      <label>D:</label>
+      <input type="date" name="deadline" value="{{ b.deadline.isoformat() if b.deadline else '' }}" onchange="this.form.submit()">
+      {% if b.deadline %}<button type="submit" name="deadline" value="" class="clear" title="Clear">×</button>{% endif %}
+    </form>
+  </div>
+</li>
+{% endmacro %}
+
+{% macro render_undated(b) %}
+<li class="todo">
+  <div class="row">
+    <form method="post" action="/blocks/{{ b.stable_key }}/marker" class="inline">
+      <input type="hidden" name="marker" value="DONE">
+      <button type="submit" class="check" title="Mark DONE">✓</button>
+    </form>
+    <span class="marker marker-{{ b.marker|lower }}">{{ b.marker }}</span>
+    {% if b.priority %}<span class="priority">[#{{ b.priority }}]</span>{% endif %}
+    <a class="content" href="/open/{{ b.stable_key }}" title="Open in Logseq">{{ b.content | render_content | safe }}</a>
+  </div>
+  <div class="row meta-row">
+    <a class="page" href="/open/{{ b.stable_key }}" title="Open in Logseq">{{ b.page }}</a>
+    <form method="post" action="/blocks/{{ b.stable_key }}/scheduled" class="inline date-form">
+      <label>schedule:</label>
+      <input type="date" name="scheduled" value="" onchange="this.form.submit()">
+    </form>
+    <form method="post" action="/blocks/{{ b.stable_key }}/deadline" class="inline date-form">
+      <label>deadline:</label>
+      <input type="date" name="deadline" value="" onchange="this.form.submit()">
+    </form>
+  </div>
+</li>
+{% endmacro %}
+
+{% macro render_done(b) %}
+<li class="todo done">
+  <div class="row">
+    <form method="post" action="/blocks/{{ b.stable_key }}/marker" class="inline">
+      <input type="hidden" name="marker" value="LATER">
+      <button type="submit" class="check undo" title="Re-open as LATER">↺</button>
+    </form>
+    <span class="marker marker-{{ b.marker|lower }}">{{ b.marker }}</span>
+    <a class="content" href="/open/{{ b.stable_key }}" title="Open in Logseq">{{ b.content | render_content | safe }}</a>
+    <a class="meta page" href="/open/{{ b.stable_key }}" title="Open in Logseq">{{ b.page }}</a>
+  </div>
+</li>
+{% endmacro %}

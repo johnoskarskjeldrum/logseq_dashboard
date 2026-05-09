@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_undated %}
+{% block body %}
+
+<section class="counts">
+  <span><b>{{ counts.total }}</b> undated todos</span>
+</section>
+
+<div class="grid">
+  <section class="span-2">
+    <h2>No date <span class="count">{{ counts.total }}</span></h2>
+    <ul class="todos">
+      {% for b in items %}{{ render_undated(b) }}{% else %}<li class="empty">all open todos have a date.</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ page_title }} — Logseq Dashboard{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Logseq</h1>
+    <nav class="tabs">
+      <a href="/" class="{{ 'active' if page_path == '/' else '' }}">Todos</a>
+      <a href="/no-date" class="{{ 'active' if page_path == '/no-date' else '' }}">No date</a>
+    </nav>
+    <div class="meta">today: {{ today_iso }}</div>
+  </header>
+  <main>
+    {% block body %}{% endblock %}
+  </main>
+</body>
+</html>

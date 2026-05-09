@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_block, render_done %}
+{% block body %}
+
+<section class="counts">
+  <span><b>{{ counts.due_today }}</b> today</span>
+  <span><b>{{ counts.overdue }}</b> overdue</span>
+  <span><b>{{ counts.next_7 }}</b> next 7 days</span>
+  <span><b>{{ counts.next_31 }}</b> next 31 days</span>
+  <span class="muted">{{ counts.open_total }} open total</span>
+</section>
+
+<div class="grid">
+  <section>
+    <h2>Today <span class="count">{{ counts.due_today }}</span></h2>
+    <ul class="todos">
+      {% for b in due_today %}{{ render_block(b, today_iso) }}{% else %}<li class="empty">nothing scheduled for today.</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Next 7 days <span class="count">{{ counts.next_7 }}</span></h2>
+    <ul class="todos">
+      {% for b in next_7 %}{{ render_block(b, today_iso) }}{% else %}<li class="empty">nothing in the next 7 days.</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Next 31 days <span class="count">{{ counts.next_31 }}</span></h2>
+    <ul class="todos">
+      {% for b in next_31 %}{{ render_block(b, today_iso) }}{% else %}<li class="empty">nothing in the next month.</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h2>Overdue <span class="count overdue">{{ counts.overdue }}</span></h2>
+    <ul class="todos">
+      {% for b in overdue %}{{ render_block(b, today_iso) }}{% else %}<li class="empty">nothing overdue.</li>{% endfor %}
+    </ul>
+  </section>
+
+  <section class="span-2">
+    <h2>Recently done</h2>
+    <ul class="todos">
+      {% for b in recent_done %}{{ render_done(b) }}{% else %}<li class="empty">no recent completions.</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+
+{% endblock %}
