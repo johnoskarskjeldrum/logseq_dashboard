@@ -28,10 +28,12 @@ to keep all data in a single normalised Block model that's reusable from an LLM.
 
 ## Setup
 
+Dependencies are managed with [`uv`](https://docs.astral.sh/uv/). Install it
+once (`curl -LsSf https://astral.sh/uv/install.sh | sh` on Linux/macOS), then:
+
 ```sh
 cd logseq_dashboard
-python3 -m venv .venv
-.venv/bin/pip install fastapi 'uvicorn[standard]' jinja2 python-multipart python-dotenv
+uv sync                # creates .venv and installs from uv.lock
 cp .env.example .env   # optional — only if you want to override defaults
 ```
 
@@ -105,8 +107,11 @@ Do **not** expose the dashboard to the public internet.
 
 1. Clone the notes repo on the Pi.
 2. Clone this dashboard on the Pi.
-3. Make sure `git pull` / `git push` work non-interactively (SSH key on the Pi).
-4. Run `uvicorn app:app --host 0.0.0.0 --port 8765` (under systemd or tmux).
+3. Install `uv` (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
+4. `uv sync` to install dependencies into `.venv` from `uv.lock`.
+5. Make sure `git pull` / `git push` work non-interactively (SSH key on the Pi,
+   SSH remote URL — not HTTPS — on the notes repo).
+6. Run `./run.sh` (under systemd or tmux).
 
 ## Interaction with `logseq-plugin-git`
 
