@@ -76,6 +76,17 @@ Sane deployments:
 
 Do **not** expose the dashboard to the public internet.
 
+## Markdown export (CLI)
+
+A small CLI renders the same buckets the dashboard shows as a Markdown file:
+
+```sh
+uv run cli.py > todos.md
+```
+
+Sections: Overdue, Today, Next 7 days, Next 31 days, No date. Useful for
+piping into a file, an LLM, or `pandoc`.
+
 ## API
 
 - `GET /api/dashboard` — JSON version of the dashboard buckets.
