@@ -1,0 +1,27 @@
+<div class="layout layout--col layout--top layout--stretch-x gap--large">
+  {% if sections.size == 0 %}
+    <div class="layout layout--col layout--center">
+      <span class="value value--large">Nothing on today</span>
+    </div>
+  {% endif %}
+  {% for section in sections %}
+    <div class="flex flex--col gap--small">
+      <span class="title">{{ section.title }}</span>
+      <div class="divider"></div>
+      {% for item in section.items %}
+        <div class="item">
+          <div class="meta"></div>
+          <div class="content flex flex--row flex--between w--full">
+            <span class="title title--small">{% if section.title == "Overdue" %}! {% endif %}{{ item.text }}</span>
+            {% if item.when != "" %}<span class="label label--small label--outline">due {{ item.when }}</span>{% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+
+<div class="title_bar">
+  <span class="title">Todo</span>
+  <span class="instance">Logseq · {{ updated }}</span>
+</div>

@@ -1,0 +1,10 @@
+[Unit]
+Description=Push Logseq todos to TRMNL
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+WorkingDirectory=/home/pi/logseq_dashboard
+ExecStart=/home/pi/logseq_dashboard/.venv/bin/python trmnl.py

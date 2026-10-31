@@ -87,6 +87,24 @@ uv run cli.py > todos.md
 Sections: Overdue, Today, Next 7 days, Next 31 days, No date. Useful for
 piping into a file, an LLM, or `pandoc`.
 
+## TRMNL e-ink display
+
+`trmnl.py` pushes a short "what am I doing" list (Doing, Overdue, Today,
+Coming up — max 8 items) to a [TRMNL](https://trmnl.com) private plugin:
+
+1. On trmnl.com, create a **Private Plugin** with the **Webhook** strategy and
+   paste [`trmnl/markup.liquid`](trmnl/markup.liquid) into its markup editor.
+2. Put the plugin's webhook URL in `.env` as `TRMNL_WEBHOOK_URL=...`.
+3. `uv run trmnl.py --dry-run` to preview, `uv run trmnl.py` to send.
+
+On the Pi, push every 15 minutes with the timer in `deploy/`:
+
+```sh
+sudo cp deploy/trmnl-todos.service deploy/trmnl-todos.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now trmnl-todos.timer
+```
+
 ## API
 
 - `GET /api/dashboard` — JSON version of the dashboard buckets.
